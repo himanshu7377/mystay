@@ -1,24 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import {Routes,Route} from 'react-router-dom'
+import { lazy,Suspense } from 'react';
+import LoadingSkeleton from './Components/LoadingSkeleton';
+
+const Home=lazy(()=>import('./pages/home'))
+const NotFound=lazy(()=>import('./pages/NotFound'))
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense fallback={<LoadingSkeleton/>}>
+    <Routes>
+      <Route path='/' element={<Home/>} />
+      <Route path='*' element={<NotFound/>} />
+    </Routes>
+    </Suspense>
+    
   );
 }
 
