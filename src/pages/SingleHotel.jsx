@@ -1,5 +1,5 @@
-import React,{useState} from 'react'
-import {Box,Button,Container,ListItem,Typography} from '@mui/material'
+import React,{useState,useEffect} from 'react'
+import {Alert,Box,Button,Container,ListItem,Typography} from '@mui/material'
 import { useQuery } from "react-query";
 import {useParams} from 'react-router-dom';
 import {getSingleHotel} from '../api/request'
@@ -10,6 +10,7 @@ import { BookingModal } from '../Components/BookingModal';
 
 function SingleHotel() {
   const [open,setOpen]=useState(false)
+  const [showAlert, setShowAlert] = useState(false);
   const {slug}=useParams()
 
   const fetchHoteldata= async ()=>{
@@ -19,6 +20,22 @@ function SingleHotel() {
 
   const handleOpen=()=>setOpen(true)
   const handleClose=()=>setOpen(false)
+
+  const handleReserve=()=>{
+    console.log('handleReserve called');
+    setShowAlert(true);
+
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 3000);
+}
+  
+useEffect(() => {
+    if (!showAlert) {
+      setShowAlert(false);
+    }
+    console.log('showAlert:', showAlert);
+  }, [showAlert]);
 
     const {isLoading,data}=useQuery('hotel-slug',fetchHoteldata)
   return (
@@ -58,10 +75,20 @@ function SingleHotel() {
             <Button variant='outlined' onClick={handleOpen}>RESERVE</Button>
 
           </Box>
-          <BookingModal data={data} open={open} handleClose={handleClose}/>
-
+          
+          <BookingModal data={data} open={open} handleClose={handleClose} handleReserve={handleReserve} />
+          
       </Container>
+         
       )}
+      <div>
+                {showAlert && (
+            <Alert variant="filled" severity="success">
+                Hotel booked successfully!
+            </Alert>
+                )}
+        
+        </div>
     </div>
   )
 }
