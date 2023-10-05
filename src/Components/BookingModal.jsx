@@ -18,8 +18,8 @@ export function BookingModal({ data, open, handleClose,  handleReserve}) {
 
   const [dates, setDates] = useState([
     {
-      startDate: Date.now(),
-      endDate: Date.now(),
+      startDate: new Date(),
+      endDate: new Date(),
       key: 'selection',
     },
   ]);
